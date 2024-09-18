@@ -7,11 +7,21 @@
   }
   .container {
     display: grid;
-    grid-template-rows: 100px 100px 100px;
-    grid-template-columns: 100px 100px 100px;
+    grid-template-rows: repeat(3, min(175px));;
+    grid-template-columns: repeat(3, min(175px));
     justify-content: center;
+    align-content: center;
+    margin-top: 2rem;
+    gap: 10px;
   }
   
+.box {
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-columns: repeat(3, 1fr);
+    justify-content: center;
+}
+
   .item {
     border: 1px solid black;
     text-align: center;
