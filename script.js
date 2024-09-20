@@ -38,6 +38,36 @@ function box1(){
         }
     });
 }
+
+function reset(){
+    let reset = document.querySelector("#reset");
+    reset.addEventListener('click', function(){
+        for(let i = 0; i < 9; i++){
+            arr[i] = null;
+        }
+        turn_count = 0;
+        let all_cells = document.querySelectorAll(".item");
+        for (let i = 0; i < all_cells.length; i++){
+            if (all_cells[i].hasChildNodes()){
+                all_cells[i].removeChild(all_cells[i].firstElementChild)
+            }
+            
+        }
+        
+    })
+    
+}
+
 box1();
+box2();
+reset();
+
+
+/*
+1. implement reset function
+2. Use function for all the boxes in the game
+3. implement check function after each move
+*/
+
 }
 )
