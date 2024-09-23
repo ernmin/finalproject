@@ -19,7 +19,7 @@
     grid-template-columns: repeat(3, min(175px));
     justify-content: center;
     align-content: center;
-    margin-top: 2rem;
+    margin-top: 0.5rem;
     gap: 10px;
   }
   
@@ -40,4 +40,10 @@
 
   #reset {
     margin: 10px;
+  }
+
+  #whose-turn {
+    margin-top: 2px;
+    display: flex;
+    justify-content: center;
   }
