@@ -11,7 +11,9 @@ for(let i = 0; i < game_num; i++){
 }
 
 let turn_count = 0;
+let previous_game_num = 9;
 const turn = document.querySelector('#whose-turn');
+indicate_turn();
 
 /*
 null is empty
@@ -25,33 +27,42 @@ function box(game_num, box_num){
     let selector = '#box' + '-' + game_num + '-' + box_num;
     let box1 = document.querySelector(selector);
     /*let box_id = 1;*/
-    box1.addEventListener('click', function(){
-        if (arr[game_num][box_num] != null){
-            return;
+    box1.addEventListener('click', mark_cross_circle.bind(null, game_num, box_num, box1));
+}
+
+function mark_cross_circle(game_num, box_num, box1){
+    if (arr[game_num][box_num] != null){
+        return;
+    }
+    else if (previous_game_num != 9 && previous_game_num != game_num){
+        return;
+    }
+    else {
+        let image = document.createElement("img");
+        if (turn_count % 2 == 0){
+            image.src = "o-mark.png"
+            box1.appendChild(image);
+            arr[game_num][box_num] = 0;
+            console.log('game num is', game_num, 'box num is', box_num);
+            console.log(check_small_game(game_num));
+            turn_count += 1;
+            previous_game_num = box_num;
+            indicate_turn();
+            next_game(game_num, box_num);
         }
         else {
-            let image = document.createElement("img");
-            if (turn_count % 2 == 0){
-                image.src = "o-mark.png"
-                box1.appendChild(image);
-                arr[game_num][box_num] = 0;
-                console.log('game num is', game_num, 'box num is', box_num);
-                console.log(check_small_game(game_num));
-                turn_count += 1;
-                indicate_turn();
-            }
-            else {
-                
-                image.src = "x-mark.png"
-                box1.appendChild(image);
-                arr[game_num][box_num] = 1;
-                console.log('game num is', game_num, 'box num is', box_num);
-                console.log(check_small_game(game_num));
-                turn_count += 1;
-                indicate_turn();
-            }
+            
+            image.src = "x-mark.png"
+            box1.appendChild(image);
+            arr[game_num][box_num] = 1;
+            console.log('game num is', game_num, 'box num is', box_num);
+            console.log(check_small_game(game_num));
+            turn_count += 1;
+            previous_game_num = box_num;
+            indicate_turn();
+            next_game(game_num, box_num);
         }
-    });
+    }
 }
 
 function reset(){
@@ -151,12 +162,14 @@ function check_diagonal(game_num){
     }
 }
 
-for (let box_num = 0; box_num < 9; box_num++){
-    for (let box_sub_num = 0; box_sub_num < 9; box_sub_num++)
-    box(box_num, box_sub_num);
+
+
+for (let game_num = 0; game_num < 9; game_num++){
+    for (let box_num = 0; box_num < 9; box_num++)
+    box(game_num, box_num);
 }
-indicate_turn();
 reset();
+
 
 
 /*
