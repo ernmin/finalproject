@@ -280,7 +280,7 @@ reset();
 3. implement check function after each move (done)
 4. if there is a win, check who won using the turn count (done)
 5. highlight all cells in that game cell if mini game is won (done)
-6. What to do if there is a draw in that game?
+6. What to do if there is a draw in that game? (done)
 7. What to do if the next game has no cells left to fill?
 8. Check big game after a minigame is won (done)
 */
