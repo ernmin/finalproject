@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function(){
-
+let biggame = []
 let arr = []
 const game_num = 9
 const box_num = 9
@@ -8,6 +8,10 @@ for(let i = 0; i < game_num; i++){
     for(let y = 0; y < box_num; y++){
         arr[i][y] = null;
     }
+}
+
+for(let i = 0; i < game_num; i++){
+    biggame[i] = null;
 }
 
 let turn_count = 0;
@@ -48,10 +52,8 @@ function mark_cross_circle(game_num, box_num, box1){
             turn_count += 1;
             previous_game_num = box_num;
             indicate_turn();
-            next_game(game_num, box_num);
         }
         else {
-            
             image.src = "x-mark.png"
             box1.appendChild(image);
             arr[game_num][box_num] = 1;
@@ -60,7 +62,6 @@ function mark_cross_circle(game_num, box_num, box1){
             turn_count += 1;
             previous_game_num = box_num;
             indicate_turn();
-            next_game(game_num, box_num);
         }
     }
 }
@@ -75,13 +76,14 @@ function reset(){
             }
         }
         turn_count = 0;
+        previous_game_num = 9;
         indicate_turn(); 
         let all_cells = document.querySelectorAll(".item");
         for (let i = 0; i < all_cells.length; i++){
             if (all_cells[i].hasChildNodes()){
                 all_cells[i].removeChild(all_cells[i].firstElementChild)
             }
-            
+            all_cells[i].style.backgroundColor = "";
         }
         
     })
@@ -97,14 +99,34 @@ function indicate_turn(){
     }
 }
 
+function highlight_game(game_num){
+    for (let box_num = 0; box_num < 9; box_num++){
+        let selector = '#box' + '-' + game_num + '-' + box_num;
+        let box = document.querySelector(selector);
+        if (turn_count % 2 == 0){
+            box.style.backgroundColor = "#FFFFC5";
+        }
+        else{
+            box.style.backgroundColor = "#DDDDDD";
+        }
+            
+    }
+}
+
 function check_small_game(game_num){
     if (check_row(game_num) == 1){
+        biggame[game_num] = turn_count % 2;
+        highlight_game(game_num);
         return 1;
     }
     else if(check_column(game_num) == 1){
+        biggame[game_num] = turn_count % 2;
+        highlight_game(game_num);
         return 1;
     }
     else if(check_diagonal(game_num) == 1){
+        biggame[game_num] = turn_count % 2;
+        highlight_game(game_num);
         return 1;
     }
     else{
@@ -173,10 +195,14 @@ reset();
 
 
 /*
-1. implement reset function
-2. Use function for all the boxes in the game
-3. implement check function after each move
-4. if there is a win, check who won using the turn count
+1. implement reset function (done)
+2. Use function for all the boxes in the game (done)
+3. implement check function after each move (done)
+4. if there is a win, check who won using the turn count (done)
+5. highlight all cells in that game cell if mini game is won
+6. What to do if there is a draw in that game?
+7. What to do if the next game has no cells left to fill?
+8. Check big game after a minigame is won
 */
 
 }
