@@ -23,6 +23,7 @@ indicate_turn();
 null is empty
 0 is circle
 1 is cross
+2 is draw
 */ 
 
 function box(game_num, box_num){
@@ -51,7 +52,12 @@ function mark_cross_circle(game_num, box_num, box1){
             if (check_small_game(game_num) == 1){
                 if (check_big_game == 1){
                     alert('Game Over');
+                    /*gameover function*/
                 }
+            }
+            else if (check_small_game(game_num) != 1 && check_small_game_draw(game_num) == 1){
+                biggame[game_num] = 2;
+                highlight_game_draw(game_num);
             }
             turn_count += 1;
             previous_game_num = box_num;
@@ -64,9 +70,13 @@ function mark_cross_circle(game_num, box_num, box1){
             console.log('game num is', game_num, 'box num is', box_num);
             console.log(check_small_game(game_num));
             if (check_small_game(game_num) == 1){
-                if (check_big_game == 1){
+                if (check_big_game() == 1){
                     alert('Game Over');
                 }
+            }
+            else if (check_small_game(game_num) != 1 && check_small_game_draw(game_num) == 1){
+                biggame[game_num] = 2;
+                highlight_game_draw(game_num);
             }
             turn_count += 1;
             previous_game_num = box_num;
@@ -121,11 +131,19 @@ function highlight_game(game_num){
     }
 }
 
-function check_small_game(game_num){
-    if (biggame[game_num] != null){
-        return 0;
+function highlight_game_draw(game_num){
+    for (let box_num = 0; box_num < 9; box_num++){
+        let selector = '#box' + '-' + game_num + '-' + box_num;
+        let box = document.querySelector(selector);
+        box.style.backgroundColor = "#B1F2FF";
     }
-    else if (check_row(game_num) == 1){
+}
+
+function check_small_game(game_num){
+    /*if (biggame[game_num] != null){
+        return 0;
+    } causing the cells to be drawn in blue*/ 
+    if (check_row(game_num) == 1){
         biggame[game_num] = turn_count % 2;
         highlight_game(game_num);
         return 1;
@@ -143,6 +161,18 @@ function check_small_game(game_num){
     else{
         return 0;
     }
+}
+
+function check_small_game_draw(game_num){
+    for(let i = 0; i < 9; i++){
+        if (arr[game_num][i] != null){
+            continue;
+        }
+        else {
+            return 0;
+        }
+    }
+    return 1;
 }
 
 function check_row(game_num){
@@ -249,10 +279,10 @@ reset();
 2. Use function for all the boxes in the game (done)
 3. implement check function after each move (done)
 4. if there is a win, check who won using the turn count (done)
-5. highlight all cells in that game cell if mini game is won
+5. highlight all cells in that game cell if mini game is won (done)
 6. What to do if there is a draw in that game?
 7. What to do if the next game has no cells left to fill?
-8. Check big game after a minigame is won
+8. Check big game after a minigame is won (done)
 */
 
 }
