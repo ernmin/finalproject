@@ -25,7 +25,6 @@ null is empty
 1 is cross
 */ 
 
-
 function box(game_num, box_num){
     /*let box_num = 1;*/
     let selector = '#box' + '-' + game_num + '-' + box_num;
@@ -49,6 +48,11 @@ function mark_cross_circle(game_num, box_num, box1){
             arr[game_num][box_num] = 0;
             console.log('game num is', game_num, 'box num is', box_num);
             console.log(check_small_game(game_num));
+            if (check_small_game(game_num) == 1){
+                if (check_big_game == 1){
+                    alert('Game Over');
+                }
+            }
             turn_count += 1;
             previous_game_num = box_num;
             indicate_turn();
@@ -59,6 +63,11 @@ function mark_cross_circle(game_num, box_num, box1){
             arr[game_num][box_num] = 1;
             console.log('game num is', game_num, 'box num is', box_num);
             console.log(check_small_game(game_num));
+            if (check_small_game(game_num) == 1){
+                if (check_big_game == 1){
+                    alert('Game Over');
+                }
+            }
             turn_count += 1;
             previous_game_num = box_num;
             indicate_turn();
@@ -71,6 +80,7 @@ function reset(){
     reset.addEventListener('click', function(){
         for(let i = 0; i < game_num; i++){
             arr[i] = [];
+            biggame[i] = null;
             for(let y = 0; y < box_num; y++){
                 arr[i][y] = null;
             }
@@ -85,9 +95,7 @@ function reset(){
             }
             all_cells[i].style.backgroundColor = "";
         }
-        
     })
-    
 }
 
 function indicate_turn(){
@@ -114,7 +122,10 @@ function highlight_game(game_num){
 }
 
 function check_small_game(game_num){
-    if (check_row(game_num) == 1){
+    if (biggame[game_num] != null){
+        return 0;
+    }
+    else if (check_row(game_num) == 1){
         biggame[game_num] = turn_count % 2;
         highlight_game(game_num);
         return 1;
@@ -184,7 +195,46 @@ function check_diagonal(game_num){
     }
 }
 
+function check_big_game(){
+    for(let cell_row = 0; cell_row < 7; cell_row = cell_row + 3){
+        if (biggame[cell_row] != null){
+            if (biggame[cell_row] == biggame[cell_row + 1] && biggame[cell_row + 1] == biggame[cell_row + 2]){
+                return 1;
+            }
+            else {
+                continue;
+            }
+        }
+        else {
+            continue;
+        }
+    }
+    for(let cell_column = 0; cell_column < 3; cell_column++){
+        if (biggame[cell_column] != null){
+            if (biggame[cell_column] == biggame[cell_column + 3] && biggame[cell_column + 3] == biggame[cell_column + 6]){
+                return 1;
+            }
+            else {
+                continue;
+            }
+        }
+        else {
+            continue;
+        }
+    }
+    let cell_diagonal = 4;
+    if (biggame[cell_diagonal] == null){
+        return 0;
+    }
+    else if (biggame[cell_diagonal] == biggame[cell_diagonal - 2] && biggame[cell_diagonal] == biggame[cell_diagonal + 2]){
+        return 1;
+    }
+    else if (biggame[cell_diagonal] == biggame[cell_diagonal - 4] && biggame[cell_diagonal] == biggame[cell_diagonal + 4]){
+        return 1;
+    }
 
+    return 0;
+}
 
 for (let game_num = 0; game_num < 9; game_num++){
     for (let box_num = 0; box_num < 9; box_num++)
