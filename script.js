@@ -16,6 +16,7 @@ for(let i = 0; i < game_num; i++){
 
 let turn_count = 0;
 let previous_game_num = 9;
+let end_game = null;
 const turn = document.querySelector('#whose-turn');
 indicate_turn();
 
@@ -35,7 +36,7 @@ function box(game_num, box_num){
 }
 
 function mark_cross_circle(game_num, box_num, box1){
-    if (arr[game_num][box_num] != null){ /*Cell is already filled do not allow selection*/
+    if (arr[game_num][box_num] != null || end_game == 1){ /*Cell is already filled do not allow selection*/
         return;
     }
     else if (biggame[game_num] != null){
@@ -56,6 +57,7 @@ function mark_cross_circle(game_num, box_num, box1){
             if (check_small_game(game_num) == 1){
                 biggame[game_num] = 0;
                 if (check_big_game == 1){
+                    game_over();
                     alert('Game Over');
                     /*gameover function*/
                 }
@@ -77,6 +79,7 @@ function mark_cross_circle(game_num, box_num, box1){
             if (check_small_game(game_num) == 1){
                 biggame[game_num] = 1;
                 if (check_big_game() == 1){
+                    game_over();
                     alert('Game Over');
                 }
             }
@@ -103,6 +106,7 @@ function reset(){
         }
         turn_count = 0;
         previous_game_num = 9;
+        end_game = null;
         indicate_turn(); 
         let all_cells = document.querySelectorAll(".item");
         for (let i = 0; i < all_cells.length; i++){
@@ -273,6 +277,11 @@ function check_big_game(){
     }
 
     return 0;
+}
+
+function game_over(){
+    end_game = 1;
+    console.log(end_game);
 }
 
 for (let game_num = 0; game_num < 9; game_num++){
