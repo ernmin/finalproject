@@ -35,10 +35,14 @@ function box(game_num, box_num){
 }
 
 function mark_cross_circle(game_num, box_num, box1){
-    if (arr[game_num][box_num] != null){
+    if (arr[game_num][box_num] != null){ /*Cell is already filled do not allow selection*/
         return;
     }
-    else if (previous_game_num != 9 && previous_game_num != game_num){
+    else if (biggame[game_num] != null){
+        return;
+    }
+
+    else if (previous_game_num != 9 && previous_game_num != game_num && biggame[previous_game_num] == null){ /*Not first turn and only can select game based on previous turn*/
         return;
     }
     else {
@@ -50,6 +54,7 @@ function mark_cross_circle(game_num, box_num, box1){
             console.log('game num is', game_num, 'box num is', box_num);
             console.log(check_small_game(game_num));
             if (check_small_game(game_num) == 1){
+                biggame[game_num] = 0;
                 if (check_big_game == 1){
                     alert('Game Over');
                     /*gameover function*/
@@ -70,6 +75,7 @@ function mark_cross_circle(game_num, box_num, box1){
             console.log('game num is', game_num, 'box num is', box_num);
             console.log(check_small_game(game_num));
             if (check_small_game(game_num) == 1){
+                biggame[game_num] = 1;
                 if (check_big_game() == 1){
                     alert('Game Over');
                 }
@@ -114,6 +120,9 @@ function indicate_turn(){
     }
     else {
         turn.textContent = "It is cross' turn";
+    }
+    for(let i = 0; i < 9; i++){
+        console.log(biggame[i]);
     }
 }
 
@@ -282,7 +291,8 @@ reset();
 5. highlight all cells in that game cell if mini game is won (done)
 6. What to do if there is a draw in that game? (done)
 7. What to do if the next game has no cells left to fill?
-8. Check big game after a minigame is won (done)
+8. Check big game after a minigame is won (to test)
+9. Game Over Function
 */
 
 }
