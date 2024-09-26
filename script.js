@@ -63,7 +63,7 @@ function mark_cross_circle(game_num, box_num, box1){
                 }
             }
             else if (check_small_game(game_num) != 1 && check_small_game_draw(game_num) == 1){
-                biggame[game_num] = 2;
+                biggame[game_num] = 5;
                 highlight_game_draw(game_num);
             }
             turn_count += 1;
@@ -84,7 +84,7 @@ function mark_cross_circle(game_num, box_num, box1){
                 }
             }
             else if (check_small_game(game_num) != 1 && check_small_game_draw(game_num) == 1){
-                biggame[game_num] = 2;
+                biggame[game_num] = 5;
                 highlight_game_draw(game_num);
             }
             turn_count += 1;
@@ -240,7 +240,7 @@ function check_diagonal(game_num){
 
 function check_big_game(){
     for(let cell_row = 0; cell_row < 7; cell_row = cell_row + 3){
-        if (biggame[cell_row] != null && biggame[cell_row] != 2){
+        if (biggame[cell_row] != null && biggame[cell_row] != 5){
             if (biggame[cell_row] == biggame[cell_row + 1] && biggame[cell_row + 1] == biggame[cell_row + 2]){
                 return 1;
             }
@@ -253,7 +253,7 @@ function check_big_game(){
         }
     }
     for(let cell_column = 0; cell_column < 3; cell_column++){
-        if (biggame[cell_column] != null && biggame[cell_row] != 2){
+        if (biggame[cell_column] != null && biggame[cell_row] != 5){
             if (biggame[cell_column] == biggame[cell_column + 3] && biggame[cell_column + 3] == biggame[cell_column + 6]){
                 return 1;
             }
@@ -269,10 +269,10 @@ function check_big_game(){
     if (biggame[cell_diagonal] == null){
         return 0;
     }
-    else if (biggame[cell_row] != 2 && biggame[cell_diagonal] == biggame[cell_diagonal - 2] && biggame[cell_diagonal] == biggame[cell_diagonal + 2]){
+    else if (biggame[cell_diagonal] != 5 && biggame[cell_diagonal] == biggame[cell_diagonal - 2] && biggame[cell_diagonal] == biggame[cell_diagonal + 2]){
         return 1;
     }
-    else if (biggame[cell_row] != 2 && biggame[cell_diagonal] == biggame[cell_diagonal - 4] && biggame[cell_diagonal] == biggame[cell_diagonal + 4]){
+    else if (biggame[cell_diagonal] != 5 && biggame[cell_diagonal] == biggame[cell_diagonal - 4] && biggame[cell_diagonal] == biggame[cell_diagonal + 4]){
         return 1;
     }
 
