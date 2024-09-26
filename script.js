@@ -24,7 +24,7 @@ indicate_turn();
 null is empty
 0 is circle
 1 is cross
-2 is draw
+5 is draw
 */ 
 
 function box(game_num, box_num){
@@ -240,7 +240,7 @@ function check_diagonal(game_num){
 
 function check_big_game(){
     for(let cell_row = 0; cell_row < 7; cell_row = cell_row + 3){
-        if (biggame[cell_row] != null){
+        if (biggame[cell_row] != null && biggame[cell_row] != 2){
             if (biggame[cell_row] == biggame[cell_row + 1] && biggame[cell_row + 1] == biggame[cell_row + 2]){
                 return 1;
             }
@@ -253,7 +253,7 @@ function check_big_game(){
         }
     }
     for(let cell_column = 0; cell_column < 3; cell_column++){
-        if (biggame[cell_column] != null){
+        if (biggame[cell_column] != null && biggame[cell_row] != 2){
             if (biggame[cell_column] == biggame[cell_column + 3] && biggame[cell_column + 3] == biggame[cell_column + 6]){
                 return 1;
             }
@@ -269,10 +269,10 @@ function check_big_game(){
     if (biggame[cell_diagonal] == null){
         return 0;
     }
-    else if (biggame[cell_diagonal] == biggame[cell_diagonal - 2] && biggame[cell_diagonal] == biggame[cell_diagonal + 2]){
+    else if (biggame[cell_row] != 2 && biggame[cell_diagonal] == biggame[cell_diagonal - 2] && biggame[cell_diagonal] == biggame[cell_diagonal + 2]){
         return 1;
     }
-    else if (biggame[cell_diagonal] == biggame[cell_diagonal - 4] && biggame[cell_diagonal] == biggame[cell_diagonal + 4]){
+    else if (biggame[cell_row] != 2 && biggame[cell_diagonal] == biggame[cell_diagonal - 4] && biggame[cell_diagonal] == biggame[cell_diagonal + 4]){
         return 1;
     }
 
@@ -283,6 +283,71 @@ function game_over(){
     end_game = 1;
     console.log(end_game);
 }
+
+function big_game_draw_diagonal(){ /*check after a draw*/
+    let cell_diagonal = 4;
+    if (biggame[cell_diagonal] + biggame[cell_diagonal - 2] + biggame[cell_diagonal + 2] == 6){
+        return 1;
+    }
+    else if (biggame[cell_diagonal] + biggame[cell_diagonal - 4] + biggame[cell_diagonal + 4] == 6){
+        return 1;
+    }
+}
+
+function big_game_draw(){
+    /*implement a hash table for 0 to 8
+    cell, row, column
+    0: 1,1
+    1: 1,2
+    2: 1,3
+    3: 2,1
+    4: 2,2
+    5: 2,3
+    6: 3,1
+    7: 3,2
+    8: 3,3
+
+    once a minigame is draws and there are more than 3 draws check for the diagonals
+    if there are 5 draws
+    check 4 cells that are not drawn
+    if it is cell x, run the 2 functions below with row and column as inputs
+    (change draw to 5 because the biggest sum the others can form is 3, 3 crosses in a row is 1 + 1 + 1)
+    If the sum of the row/column is greater than 5
+    if all 4 cells cannot form a line the game is over
+    */
+}
+
+function sum_row(row){
+ /*takes inputs row 1, 2 or 3*/
+    let sum = 0;
+    let stop = row * 3;
+    let i = stop - 3;
+    for(; i < stop; i++){
+        if (biggame[i] == null){
+            continue;
+        }
+        else {
+        sum = sum + biggame[i];
+        }
+    }
+    return sum;
+}
+
+function sum_column(column){
+    /*takes inputs column 1, 2 or 3*/
+       let sum = 0;
+       let stop = column + 6;
+       let i = column - 1;
+       for(; i < stop; i = i + 3){
+           if (biggame[i] == null){
+               continue;
+           }
+           else {
+           sum = sum + biggame[i];
+           }
+       }
+       return sum;
+   }
 
 for (let game_num = 0; game_num < 9; game_num++){
     for (let box_num = 0; box_num < 9; box_num++)
@@ -300,8 +365,9 @@ reset();
 5. highlight all cells in that game cell if mini game is won (done)
 6. What to do if there is a draw in that game? (done)
 7. What to do if the next game has no cells left to fill?
-8. Check big game after a minigame is won (to test)
-9. Game Over Function
+8. Check big game after a minigame is won (done)
+9. Game Over Function (done)
+10. What if big game is a draw? At which point it is not possible to win?
 */
 
 }
