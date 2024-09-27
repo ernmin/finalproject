@@ -43,28 +43,36 @@ function mark_cross_circle(game_num, box_num, box1){
         return;
     }
 
-    else if (previous_game_num != 9 && previous_game_num != game_num && biggame[previous_game_num] == null){ /*Not first turn and only can select game based on previous turn*/
+    /*else if (previous_game_num != 9 && previous_game_num != game_num && biggame[previous_game_num] == null){ /*Not first turn and only can select game based on previous turn
         return;
-    }
+    }*/
+   /*UNDO COMMENT ABOVE*/
     else {
         let image = document.createElement("img");
         if (turn_count % 2 == 0){
             image.src = "o-mark.png"
             box1.appendChild(image);
             arr[game_num][box_num] = 0;
-            console.log('game num is', game_num, 'box num is', box_num);
-            console.log(check_small_game(game_num));
+            console.log('game num is', game_num, 'box num is', box_num, 'turn num is', turn_count);
             if (check_small_game(game_num) == 1){
                 biggame[game_num] = 0;
                 if (check_big_game == 1){
                     game_over();
-                    alert('Game Over');
+                    alert('Game Over'); /*change alert to 'text content'*/
                     /*gameover function*/
                 } /*see where to implement the draw check*/
+                else if(check_big_draw_diagonal() == 1 || check_big_row_draw() == 1 || check_big_column_draw() == 1){
+                    game_over();
+                    alert("Draw"); /*change alert to 'text content'*/
+                }
             }
             else if (check_small_game(game_num) != 1 && check_small_game_draw(game_num) == 1){
                 biggame[game_num] = 5;
                 highlight_game_draw(game_num);
+                if(check_big_draw_diagonal() == 1 || check_big_row_draw() == 1 || check_big_column_draw() == 1){
+                    game_over();
+                    alert("Draw"); /*change alert to 'text content'*/
+                }
             }
             turn_count += 1;
             previous_game_num = box_num;
@@ -74,18 +82,25 @@ function mark_cross_circle(game_num, box_num, box1){
             image.src = "x-mark.png"
             box1.appendChild(image);
             arr[game_num][box_num] = 1;
-            console.log('game num is', game_num, 'box num is', box_num);
-            console.log(check_small_game(game_num));
+            console.log('game num is', game_num, 'box num is', box_num, 'turn num is', turn_count);
             if (check_small_game(game_num) == 1){
                 biggame[game_num] = 1;
                 if (check_big_game() == 1){
                     game_over();
-                    alert('Game Over');
+                    alert('Game Over'); /*change alert to 'text content'*/
                 } /*see where to implement the draw check*/
+                else if(check_big_draw_diagonal() == 1 || check_big_row_draw() == 1 || check_big_column_draw() == 1){
+                    game_over();
+                    alert("Draw"); /*change alert to 'text content'*/
+                }
             }
             else if (check_small_game(game_num) != 1 && check_small_game_draw(game_num) == 1){
                 biggame[game_num] = 5;
                 highlight_game_draw(game_num);
+                if(check_big_draw_diagonal() == 1 || check_big_row_draw() == 1 || check_big_column_draw() == 1){
+                    game_over();
+                    alert("Draw");
+                }
             }
             turn_count += 1;
             previous_game_num = box_num;
@@ -125,9 +140,9 @@ function indicate_turn(){
     else {
         turn.textContent = "It is cross' turn";
     }
-    for(let i = 0; i < 9; i++){
+    /*for(let i = 0; i < 9; i++){
         console.log(biggame[i]);
-    }
+    }*/
 }
 
 function highlight_game(game_num){
@@ -253,7 +268,7 @@ function check_big_game(){
         }
     }
     for(let cell_column = 0; cell_column < 3; cell_column++){
-        if (biggame[cell_column] != null && biggame[cell_row] != 5){
+        if (biggame[cell_column] != null && biggame[cell_column] != 5){
             if (biggame[cell_column] == biggame[cell_column + 3] && biggame[cell_column + 3] == biggame[cell_column + 6]){
                 return 1;
             }
@@ -370,10 +385,12 @@ function check_big_column_draw(){
 
 function check_big_draw_diagonal(){ /*check if should do this from the valid combinations left*/
     let cell_diagonal = 4;
-    if (biggame[cell_diagonal] + biggame[cell_diagonal - 2] + biggame[cell_diagonal + 2] == 6){
+    if (biggame[cell_diagonal] + biggame[cell_diagonal - 2] + biggame[cell_diagonal + 2] == 15){
+        console.log('big diagonal');
         return 1;
     }
-    else if (biggame[cell_diagonal] + biggame[cell_diagonal - 4] + biggame[cell_diagonal + 4] == 6){
+    else if (biggame[cell_diagonal] + biggame[cell_diagonal - 4] + biggame[cell_diagonal + 4] == 15){
+        console.log('big diagonal');
         return 1;
     }
 }
