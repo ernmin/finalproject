@@ -56,14 +56,14 @@ function mark_cross_circle(game_num, box_num, box1){
             console.log('game num is', game_num, 'box num is', box_num, 'turn num is', turn_count);
             if (check_small_game(game_num) == 1){
                 biggame[game_num] = 0;
-                if (check_big_game == 1){
+                if (check_big_game() == 1){
                     game_over();
-                    alert('Game Over'); /*change alert to 'text content'*/
+                    alert('Game Over, Circle Wins'); /*change alert to 'text content'*/
                     /*gameover function*/
                 } /*see where to implement the draw check*/
                 else if(check_big_draw_diagonal() == 1 || check_big_row_draw() == 1 || check_big_column_draw() == 1){
                     game_over();
-                    alert("Draw"); /*change alert to 'text content'*/
+                    alert("Draw"); /*change alert to 'text content' TEST THIS ALSO*/
                 }
             }
             else if (check_small_game(game_num) != 1 && check_small_game_draw(game_num) == 1){
@@ -87,7 +87,7 @@ function mark_cross_circle(game_num, box_num, box1){
                 biggame[game_num] = 1;
                 if (check_big_game() == 1){
                     game_over();
-                    alert('Game Over'); /*change alert to 'text content'*/
+                    alert('Game Over, Cross Wins'); /*change alert to 'text content'*/
                 } /*see where to implement the draw check*/
                 else if(check_big_draw_diagonal() == 1 || check_big_row_draw() == 1 || check_big_column_draw() == 1){
                     game_over();
