@@ -61,7 +61,7 @@ function mark_cross_circle(game_num, box_num, box1){
                     alert('Game Over, Circle Wins'); /*change alert to 'text content'*/
                     /*gameover function*/
                 } /*see where to implement the draw check*/
-                else if(check_big_draw_diagonal() == 1 || check_big_row_draw() == 1 || check_big_column_draw() == 1){
+                else if(check_big_draw_diagonal() == 1 || check_big_circle_draw() == 1 || check_big_cross_draw() == 1){
                     game_over();
                     alert("Draw"); /*change alert to 'text content' TEST THIS ALSO*/
                 }
@@ -69,7 +69,7 @@ function mark_cross_circle(game_num, box_num, box1){
             else if (check_small_game(game_num) != 1 && check_small_game_draw(game_num) == 1){
                 biggame[game_num] = 5;
                 highlight_game_draw(game_num);
-                if(check_big_draw_diagonal() == 1 || check_big_row_draw() == 1 || check_big_column_draw() == 1){
+                if(check_big_draw_diagonal() == 1 || check_big_circle_draw() == 1 || check_big_cross_draw() == 1){
                     game_over();
                     alert("Draw"); /*change alert to 'text content'*/
                 }
@@ -89,7 +89,7 @@ function mark_cross_circle(game_num, box_num, box1){
                     game_over();
                     alert('Game Over, Cross Wins'); /*change alert to 'text content'*/
                 } /*see where to implement the draw check*/
-                else if(check_big_draw_diagonal() == 1 || check_big_row_draw() == 1 || check_big_column_draw() == 1){
+                else if(check_big_draw_diagonal() == 1 || check_big_circle_draw() == 1 || check_big_cross_draw() == 1){
                     game_over();
                     alert("Draw"); /*change alert to 'text content'*/
                 }
@@ -97,7 +97,7 @@ function mark_cross_circle(game_num, box_num, box1){
             else if (check_small_game(game_num) != 1 && check_small_game_draw(game_num) == 1){
                 biggame[game_num] = 5;
                 highlight_game_draw(game_num);
-                if(check_big_draw_diagonal() == 1 || check_big_row_draw() == 1 || check_big_column_draw() == 1){
+                if(check_big_draw_diagonal() == 1 || check_big_circle_draw() == 1 || check_big_cross_draw() == 1){
                     game_over();
                     alert("Draw");
                 }
@@ -254,6 +254,9 @@ function check_diagonal(game_num){
 }
 
 function check_big_game(){
+    for(let i = 0; i < 9; i = i + 3){
+        console.log(biggame[i], biggame[i+1], biggame[i+2]);
+    }
     for(let cell_row = 0; cell_row < 7; cell_row = cell_row + 3){
         if (biggame[cell_row] != null && biggame[cell_row] != 5){
             if (biggame[cell_row] == biggame[cell_row + 1] && biggame[cell_row + 1] == biggame[cell_row + 2]){
@@ -299,13 +302,42 @@ function game_over(){
     console.log(end_game);
 }
 
-function check_big_row_draw(){
-    /*circle & row*/
+function check_big_circle_draw(){
+    /*circle & row
+    01null
+    10null
+    01null
+    problem gives draw in the row
+    see picture in my phone
+    */
     for(let cell_row = 0; cell_row < 7; cell_row = cell_row + 3){
+        console.log('biggame[cell_row] is,', biggame[cell_row]);
         if (biggame[cell_row] == 0 || biggame[cell_row] == null){
+            console.log('biggame[cell_row + 1] is,', biggame[cell_row + 1]);
             if (biggame[cell_row + 1] == 0 || biggame[cell_row + 1] == null){
+                console.log('biggame[cell_row + 2] is,', biggame[cell_row + 2]);
                 if (biggame[cell_row + 2] == 0 || biggame[cell_row + 2] == null){
-                return 0;
+                    console.log('big row no draw circle, row ', cell_row);
+                    return 0;
+                }
+                else {
+                    continue;
+                }
+            }
+            else {
+                continue;
+            }
+        }
+        else {
+            continue;
+        }
+    }
+    for(let cell_column = 0; cell_column < 3; cell_column++){
+        if (biggame[cell_column] == 0 || biggame[cell_column] == null){
+            if (biggame[cell_column + 3] == 0 || biggame[cell_column + 3] == null){
+                if (biggame[cell_column + 6] == 0 || biggame[cell_column + 6] == null){
+                    console.log('big column no draw');
+                    return 0;
                 }
                 else {
                     continue;
@@ -320,34 +352,28 @@ function check_big_row_draw(){
         }
     }
     /*cross & row*/
-    for(let cell_row = 0; cell_row < 7; cell_row = cell_row + 3){
-        if (biggame[cell_row] == 1 || biggame[cell_row] == null){
-            if (biggame[cell_row + 1] == 1 || biggame[cell_row + 1] == null){
-                if (biggame[cell_row + 2] == 1 || biggame[cell_row + 2] == null){
-                return 0;
-                }
-                else {
-                    continue;
-                }
-            }
-            else {
-                continue;
-            }
-        }
-        else {
-            continue;
-        }
-    }
+    
+    console.log('big row draw');
     return 1;
 }
 
-function check_big_column_draw(){
+function check_big_cross_draw(){
+    /*cross & column
+    010
+    101
+    null null null
+    problem
+    */
     /*cross & column*/
-    for(let cell_column = 0; cell_column < 3; cell_column++){
-        if (biggame[cell_column] == 0 || biggame[cell_column] == null){
-            if (biggame[cell_column + 3] == 0 || biggame[cell_column + 3] == null){
-                if (biggame[cell_column + 6] == 0 || biggame[cell_column + 6] == null){
-                return 0;
+    for(let cell_row = 0; cell_row < 7; cell_row = cell_row + 3){
+        console.log('biggame[cell_row] is,', biggame[cell_row]);
+        if (biggame[cell_row] == 1 || biggame[cell_row] == null){
+            console.log('biggame[cell_row + 1] is,', biggame[cell_row + 1]);
+            if (biggame[cell_row + 1] == 1 || biggame[cell_row + 1] == null){
+                console.log('biggame[cell_row + 2] is,', biggame[cell_row + 2]);
+                if (biggame[cell_row + 2] == 1 || biggame[cell_row + 2] == null){
+                    console.log('big row no draw cross, row ', cell_row);
+                    return 0;
                 }
                 else {
                     continue;
@@ -361,12 +387,12 @@ function check_big_column_draw(){
             continue;
         }
     }
-    /*cross & column*/
     for(let cell_column = 0; cell_column < 3; cell_column++){
         if (biggame[cell_column] == 1 || biggame[cell_column] == null){
             if (biggame[cell_column + 3] == 1 || biggame[cell_column + 3] == null){
                 if (biggame[cell_column + 6] == 1 || biggame[cell_column + 6] == null){
-                return 0;
+                    console.log('big column no draw');
+                    return 0;
                 }
                 else {
                     continue;
@@ -380,17 +406,19 @@ function check_big_column_draw(){
             continue;
         }
     }
+    
+    console.log('big column draw');
     return 1;
 }
 
 function check_big_draw_diagonal(){ /*check if should do this from the valid combinations left*/
     let cell_diagonal = 4;
     if (biggame[cell_diagonal] + biggame[cell_diagonal - 2] + biggame[cell_diagonal + 2] == 15){
-        console.log('big diagonal');
+        console.log('big diagonal draw');
         return 1;
     }
     else if (biggame[cell_diagonal] + biggame[cell_diagonal - 4] + biggame[cell_diagonal + 4] == 15){
-        console.log('big diagonal');
+        console.log('big diagonal draw');
         return 1;
     }
 }
