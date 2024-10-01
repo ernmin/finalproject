@@ -116,7 +116,7 @@ function next_game_border(game_num, box_num){
     let active_selector = '.box' + '-' + box_num;
     /*let all_box = document.querySelectorAll('.box');*/
     let active_box = document.querySelector(active_selector);
-    active_box.style.outline = "thin solid #0000FF";
+    active_box.style.outline = "thick solid #FF0000";
     let inactive_box = document.querySelector(inactive_selector);
     inactive_box.style.outline = "";
     /*if(biggame[box_num] != null){
@@ -144,6 +144,10 @@ function reset(){
                 all_cells[i].removeChild(all_cells[i].firstElementChild)
             }
             all_cells[i].style.backgroundColor = "";
+        }
+        let all_boxes = document.querySelectorAll(".box");
+        for (let i = 0; i < all_boxes.length; i++){
+            all_boxes[i].style.outline = "";
         }
     })
 }
