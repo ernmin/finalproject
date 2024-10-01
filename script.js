@@ -43,10 +43,10 @@ function mark_cross_circle(game_num, box_num, box1){
         return;
     }
 
-    /*else if (previous_game_num != 9 && previous_game_num != game_num && biggame[previous_game_num] == null){ /*Not first turn and only can select game based on previous turn
+    /*else if (previous_game_num != 9 && previous_game_num != game_num && biggame[previous_game_num] == null){
         return;
-    }*/
-   /*UNDO COMMENT ABOVE*/
+    } UNDO COMMENT TO DIRECT NEXT PLAYER MOVE*/
+   
     else {
         let image = document.createElement("img");
         if (turn_count % 2 == 0){
@@ -61,7 +61,7 @@ function mark_cross_circle(game_num, box_num, box1){
                     alert('Game Over, Circle Wins'); /*change alert to 'text content'*/
                     /*gameover function*/
                 } /*see where to implement the draw check*/
-                else if(check_big_draw_diagonal() == 1 || check_big_circle_draw() == 1 || check_big_cross_draw() == 1){
+                else if(/*check_big_draw_diagonal() == 1 || */(check_big_circle_draw() == 1 && check_big_cross_draw() == 1)){
                     game_over();
                     alert("Draw"); /*change alert to 'text content' TEST THIS ALSO*/
                 }
@@ -69,13 +69,14 @@ function mark_cross_circle(game_num, box_num, box1){
             else if (check_small_game(game_num) != 1 && check_small_game_draw(game_num) == 1){
                 biggame[game_num] = 5;
                 highlight_game_draw(game_num);
-                if(check_big_draw_diagonal() == 1 || check_big_circle_draw() == 1 || check_big_cross_draw() == 1){
+                if(/*check_big_draw_diagonal() == 1 || */(check_big_circle_draw() == 1 && check_big_cross_draw() == 1)){
                     game_over();
                     alert("Draw"); /*change alert to 'text content'*/
                 }
             }
             turn_count += 1;
             previous_game_num = box_num;
+            next_game_border(game_num, box_num);
             indicate_turn();
         }
         else {
@@ -89,7 +90,7 @@ function mark_cross_circle(game_num, box_num, box1){
                     game_over();
                     alert('Game Over, Cross Wins'); /*change alert to 'text content'*/
                 } /*see where to implement the draw check*/
-                else if(check_big_draw_diagonal() == 1 || check_big_circle_draw() == 1 || check_big_cross_draw() == 1){
+                else if(/*check_big_draw_diagonal() == 1 || */(check_big_circle_draw() == 1 && check_big_cross_draw() == 1)){
                     game_over();
                     alert("Draw"); /*change alert to 'text content'*/
                 }
@@ -97,16 +98,30 @@ function mark_cross_circle(game_num, box_num, box1){
             else if (check_small_game(game_num) != 1 && check_small_game_draw(game_num) == 1){
                 biggame[game_num] = 5;
                 highlight_game_draw(game_num);
-                if(check_big_draw_diagonal() == 1 || check_big_circle_draw() == 1 || check_big_cross_draw() == 1){
+                if(/*check_big_draw_diagonal() == 1 || */(check_big_circle_draw() == 1 && check_big_cross_draw() == 1)){
                     game_over();
                     alert("Draw");
                 }
             }
             turn_count += 1;
             previous_game_num = box_num;
+            next_game_border(game_num, box_num);
             indicate_turn();
         }
     }
+}
+
+function next_game_border(game_num, box_num){
+    let inactive_selector = '.box' + '-' + game_num;
+    let active_selector = '.box' + '-' + box_num;
+    /*let all_box = document.querySelectorAll('.box');*/
+    let active_box = document.querySelector(active_selector);
+    active_box.style.outline = "thin solid #0000FF";
+    let inactive_box = document.querySelector(inactive_selector);
+    inactive_box.style.outline = "";
+    /*if(biggame[box_num] != null){
+        
+    }*/
 }
 
 function reset(){
@@ -352,7 +367,22 @@ function check_big_circle_draw(){
         }
     }
     /*cross & row*/
-    
+    let circle = 0;
+    if (biggame[circle] == 0 || biggame[circle] == null){
+        if (biggame[circle + 4] == 0 || biggame[circle + 4] == null){
+            if (biggame[circle + 8] == 0 || biggame[circle + 8] == null){
+                return 0;
+            }
+        }
+    }
+    circle = 2;
+    if (biggame[circle] == 0 || biggame[circle] == null){
+        if (biggame[circle + 2] == 0 || biggame[circle + 2] == null){
+            if (biggame[circle + 4] == 0 || biggame[circle + 4] == null){
+                return 0;
+            }
+        }
+    }
     console.log('big row draw');
     return 1;
 }
@@ -407,20 +437,24 @@ function check_big_cross_draw(){
         }
     }
     
+    let cross = 0;
+    if (biggame[cross] == 0 || biggame[cross] == null){
+        if (biggame[cross + 4] == 0 || biggame[cross + 4] == null){
+            if (biggame[cross + 8] == 0 || biggame[cross + 8] == null){
+                return 0;
+            }
+        }
+    }
+    cross = 2;
+    if (biggame[cross] == 0 || biggame[cross] == null){
+        if (biggame[cross + 2] == 0 || biggame[cross + 2] == null){
+            if (biggame[cross + 4] == 0 || biggame[cross + 4] == null){
+                return 0;
+            }
+        }
+    }
     console.log('big column draw');
     return 1;
-}
-
-function check_big_draw_diagonal(){ /*check if should do this from the valid combinations left*/
-    let cell_diagonal = 4;
-    if (biggame[cell_diagonal] + biggame[cell_diagonal - 2] + biggame[cell_diagonal + 2] == 15){
-        console.log('big diagonal draw');
-        return 1;
-    }
-    else if (biggame[cell_diagonal] + biggame[cell_diagonal - 4] + biggame[cell_diagonal + 4] == 15){
-        console.log('big diagonal draw');
-        return 1;
-    }
 }
 
 for (let game_num = 0; game_num < 9; game_num++){
@@ -438,10 +472,11 @@ reset();
 4. if there is a win, check who won using the turn count (done)
 5. highlight all cells in that game cell if mini game is won (done)
 6. What to do if there is a draw in that game? (done)
-7. What to do if the next game has no cells left to fill?
+7. What to do if the next game has no cells left to fill? (done)
 8. Check big game after a minigame is won (done)
 9. Game Over Function (done)
-10. What if big game is a draw? At which point it is not possible to win?
+10. What if big game is a draw? At which point it is not possible to win? (done)
+11. Amend grid size according to the screen
 */
 
 }
