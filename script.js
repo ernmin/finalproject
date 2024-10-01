@@ -114,14 +114,29 @@ function mark_cross_circle(game_num, box_num, box1){
 function next_game_border(game_num, box_num){
     let inactive_selector = '.box' + '-' + game_num;
     let active_selector = '.box' + '-' + box_num;
-    /*let all_box = document.querySelectorAll('.box');*/
+    let all_boxes = document.querySelectorAll('.box');
+    for (let i = 0; i < all_boxes.length; i++){
+        all_boxes[i].style.outline = "";
+    }
     let active_box = document.querySelector(active_selector);
-    active_box.style.outline = "thick solid #FF0000";
+    
     let inactive_box = document.querySelector(inactive_selector);
-    inactive_box.style.outline = "";
-    /*if(biggame[box_num] != null){
-        
-    }*/
+    
+    if(biggame[box_num] != null){
+        for (let i = 0; i < all_boxes.length; i++){
+            if(i == box_num){
+                continue;
+            }
+            else{
+                all_boxes[i].style.outline = "thick solid #FF0000";
+            }
+            
+        }
+    }
+    else{
+        inactive_box.style.outline = "";
+        active_box.style.outline = "thick solid #FF0000";
+    }
 }
 
 function reset(){
