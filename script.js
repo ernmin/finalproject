@@ -124,7 +124,7 @@ function next_game_border(game_num, box_num){
     
     if(biggame[box_num] != null){
         for (let i = 0; i < all_boxes.length; i++){
-            if(i == box_num){
+            if(i == box_num || biggame[i] != null){
                 continue;
             }
             else{
