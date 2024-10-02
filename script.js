@@ -58,6 +58,7 @@ function mark_cross_circle(game_num, box_num, box1){
                 biggame[game_num] = 0;
                 if (check_big_game() == 1){
                     game_over();
+                    highlight_winning_game();
                     draw_or_win('Game Over, Circle Wins');
                     return;
                     
@@ -94,6 +95,7 @@ function mark_cross_circle(game_num, box_num, box1){
                 biggame[game_num] = 1;
                 if (check_big_game() == 1){
                     game_over();
+                    highlight_winning_game();
                     draw_or_win('Game Over, Cross Wins');
                     return;
                 } /*see where to implement the draw check*/
@@ -352,7 +354,6 @@ function game_over(){
         for (let i = 0; i < all_boxes.length; i++){
             all_boxes[i].style.outline = "";
         }
-    highlight_winning_game();
     console.log(end_game);
 }
 
