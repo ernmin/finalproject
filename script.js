@@ -58,12 +58,16 @@ function mark_cross_circle(game_num, box_num, box1){
                 biggame[game_num] = 0;
                 if (check_big_game() == 1){
                     game_over();
-                    alert('Game Over, Circle Wins'); /*change alert to 'text content'*/
-                    /*gameover function*/
+                    draw_or_win('Game Over, Circle Wins');
+                    return;
+                    
+                    
                 } /*see where to implement the draw check*/
                 else if(/*check_big_draw_diagonal() == 1 || */(check_big_circle_draw() == 1 && check_big_cross_draw() == 1)){
                     game_over();
-                    alert("Draw"); /*change alert to 'text content' TEST THIS ALSO*/
+                    draw_or_win('DRAW');
+                    return;
+                     
                 }
             }
             else if (check_small_game(game_num) != 1 && check_small_game_draw(game_num) == 1){
@@ -71,7 +75,9 @@ function mark_cross_circle(game_num, box_num, box1){
                 highlight_game_draw(game_num);
                 if(/*check_big_draw_diagonal() == 1 || */(check_big_circle_draw() == 1 && check_big_cross_draw() == 1)){
                     game_over();
-                    alert("Draw"); /*change alert to 'text content'*/
+                    draw_or_win('DRAW');
+                    return;
+                    
                 }
             }
             turn_count += 1;
@@ -88,11 +94,13 @@ function mark_cross_circle(game_num, box_num, box1){
                 biggame[game_num] = 1;
                 if (check_big_game() == 1){
                     game_over();
-                    alert('Game Over, Cross Wins'); /*change alert to 'text content'*/
+                    draw_or_win('Game Over, Cross Wins');
+                    return;
                 } /*see where to implement the draw check*/
                 else if(/*check_big_draw_diagonal() == 1 || */(check_big_circle_draw() == 1 && check_big_cross_draw() == 1)){
                     game_over();
-                    alert("Draw"); /*change alert to 'text content'*/
+                    draw_or_win('DRAW');
+                    return;
                 }
             }
             else if (check_small_game(game_num) != 1 && check_small_game_draw(game_num) == 1){
@@ -100,7 +108,8 @@ function mark_cross_circle(game_num, box_num, box1){
                 highlight_game_draw(game_num);
                 if(/*check_big_draw_diagonal() == 1 || */(check_big_circle_draw() == 1 && check_big_cross_draw() == 1)){
                     game_over();
-                    alert("Draw");
+                    draw_or_win('DRAW');
+                    return;
                 }
             }
             turn_count += 1;
@@ -167,11 +176,17 @@ function reset(){
     })
 }
 
+function draw_or_win(description){
+    console.log(description)
+    turn.textContent = description;
+    /*highlight winning combination*/
+}
+
 function indicate_turn(){
-    if (turn_count % 2 == 0){
+    if(turn_count % 2 == 0){
         turn.textContent = "It is circle's turn";
     }
-    else {
+    else if(turn_count % 2 == 1) {
         turn.textContent = "It is cross' turn";
     }
     /*for(let i = 0; i < 9; i++){
