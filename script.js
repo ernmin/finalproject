@@ -179,7 +179,7 @@ function reset(){
 function draw_or_win(description){
     console.log(description)
     turn.textContent = description;
-    /*highlight winning combination*/
+    /*highlight winning combination and do not need to highlight next turn*/
 }
 
 function indicate_turn(){
@@ -348,7 +348,27 @@ function check_big_game(){
 
 function game_over(){
     end_game = 1;
+    let all_boxes = document.querySelectorAll(".box");
+        for (let i = 0; i < all_boxes.length; i++){
+            all_boxes[i].style.outline = "";
+        }
+    highlight_winning_game();
     console.log(end_game);
+}
+
+function highlight_winning_game(){
+    let all_boxes = document.querySelectorAll(".box");
+        for (let i = 0; i < all_boxes.length; i++){
+            if(biggame[i] == 0 && turn_count % 2 == 0){
+                all_boxes[i].style.outline = "thick solid #00AF00";
+            }
+            else if(biggame[i] == 1 && turn_count % 2 == 1){
+                all_boxes[i].style.outline = "thick solid #00AF00";
+            }
+            else{
+                continue;
+            }
+        }
 }
 
 function check_big_circle_draw(){
