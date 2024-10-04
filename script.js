@@ -43,9 +43,9 @@ function mark_cross_circle(game_num, box_num, box1){
         return;
     }
 
-    /*else if (previous_game_num != 9 && previous_game_num != game_num && biggame[previous_game_num] == null){
+    else if (previous_game_num != 9 && previous_game_num != game_num && biggame[previous_game_num] == null){
         return;
-    } UNDO COMMENT TO DIRECT NEXT PLAYER MOVE*/
+    }
    
     else {
         let image = document.createElement("img");
