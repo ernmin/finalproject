@@ -33,6 +33,9 @@ function box(game_num, box_num){
     let box1 = document.querySelector(selector);
     /*let box_id = 1;*/
     box1.addEventListener('click', mark_cross_circle.bind(null, game_num, box_num, box1));
+    /*let undo = document.querySelector("#undo");
+    undo.addEventListener('click', undo_move.bind(game_num, box_num));*/
+
 }
 
 function mark_cross_circle(game_num, box_num, box1){
@@ -43,9 +46,9 @@ function mark_cross_circle(game_num, box_num, box1){
         return;
     }
 
-    /*else if (previous_game_num != 9 && previous_game_num != game_num && biggame[previous_game_num] == null){
+    else if (previous_game_num != 9 && previous_game_num != game_num && biggame[previous_game_num] == null){
         return;
-    }*/
+    }
    
     else {
         let image = document.createElement("img");
@@ -173,7 +176,28 @@ function reset(){
         for (let i = 0; i < all_boxes.length; i++){
             all_boxes[i].style.outline = "";
         }
-    })
+    });
+}
+
+function undo_move(game_num, box_num){
+    arr[game_num][box_num] = null;
+    let selector = '#box' + '-' + game_num + '-' + box_num;
+    let box1 = document.querySelector(selector);
+    if (box1.hasChildNodes()){
+        box1.removeChild(box1.firstElementChild);
+    }
+    turn_count--;
+    unhighlight_game(game_num);
+    unhighlight_borders();
+    next_game_border(game_num, box_num);
+    indicate_turn();
+}
+
+function unhighlight_borders(){
+    let all_boxes = document.querySelectorAll(".box");
+        for (let i = 0; i < all_boxes.length; i++){
+            all_boxes[i].style.outline = "";
+        }
 }
 
 function draw_or_win(description){
@@ -213,6 +237,14 @@ function highlight_game_draw(game_num){
         let selector = '#box' + '-' + game_num + '-' + box_num;
         let box = document.querySelector(selector);
         /*box.style.backgroundColor = "#B1F2FF";*/
+    }
+}
+
+function unhighlight_game(game_num){
+    for (let box_num = 0; box_num < 9; box_num++){
+        let selector = '#box' + '-' + game_num + '-' + box_num;
+        let box = document.querySelector(selector);
+        box.style.backgroundColor = "";
     }
 }
 
