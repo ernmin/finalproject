@@ -43,9 +43,9 @@ function mark_cross_circle(game_num, box_num, box1){
         return;
     }
 
-    else if (previous_game_num != 9 && previous_game_num != game_num && biggame[previous_game_num] == null){
+    /*else if (previous_game_num != 9 && previous_game_num != game_num && biggame[previous_game_num] == null){
         return;
-    }
+    }*/
    
     else {
         let image = document.createElement("img");
@@ -58,7 +58,6 @@ function mark_cross_circle(game_num, box_num, box1){
                 biggame[game_num] = 0;
                 if (check_big_game() == 1){
                     game_over();
-                    highlight_winning_game();
                     draw_or_win('Game Over, Circle Wins');
                     return;
                     
@@ -95,7 +94,6 @@ function mark_cross_circle(game_num, box_num, box1){
                 biggame[game_num] = 1;
                 if (check_big_game() == 1){
                     game_over();
-                    highlight_winning_game();
                     draw_or_win('Game Over, Cross Wins');
                     return;
                 } /*see where to implement the draw check*/
@@ -139,14 +137,14 @@ function next_game_border(game_num, box_num){
                 continue;
             }
             else{
-                all_boxes[i].style.outline = "thick solid #FF0000";
+                all_boxes[i].style.outline = "thick solid #FF746C";
             }
             
         }
     }
     else{
         inactive_box.style.outline = "";
-        active_box.style.outline = "thick solid #FF0000";
+        active_box.style.outline = "thick solid #FF746C";
     }
 }
 
@@ -214,7 +212,7 @@ function highlight_game_draw(game_num){
     for (let box_num = 0; box_num < 9; box_num++){
         let selector = '#box' + '-' + game_num + '-' + box_num;
         let box = document.querySelector(selector);
-        box.style.backgroundColor = "#B1F2FF";
+        /*box.style.backgroundColor = "#B1F2FF";*/
     }
 }
 
@@ -311,6 +309,7 @@ function check_big_game(){
     for(let cell_row = 0; cell_row < 7; cell_row = cell_row + 3){
         if (biggame[cell_row] != null && biggame[cell_row] != 5){
             if (biggame[cell_row] == biggame[cell_row + 1] && biggame[cell_row + 1] == biggame[cell_row + 2]){
+                highlight_winning_game(cell_row, cell_row + 1, cell_row + 2);
                 return 1;
             }
             else {
@@ -324,6 +323,7 @@ function check_big_game(){
     for(let cell_column = 0; cell_column < 3; cell_column++){
         if (biggame[cell_column] != null && biggame[cell_column] != 5){
             if (biggame[cell_column] == biggame[cell_column + 3] && biggame[cell_column + 3] == biggame[cell_column + 6]){
+                highlight_winning_game(cell_column, cell_column + 3, cell_column + 6);
                 return 1;
             }
             else {
@@ -339,9 +339,11 @@ function check_big_game(){
         return 0;
     }
     else if (biggame[cell_diagonal] != 5 && biggame[cell_diagonal] == biggame[cell_diagonal - 2] && biggame[cell_diagonal] == biggame[cell_diagonal + 2]){
+        highlight_winning_game(cell_diagonal, cell_diagonal - 2, cell_diagonal + 2);
         return 1;
     }
     else if (biggame[cell_diagonal] != 5 && biggame[cell_diagonal] == biggame[cell_diagonal - 4] && biggame[cell_diagonal] == biggame[cell_diagonal + 4]){
+        highlight_winning_game(cell_diagonal, cell_diagonal - 4, cell_diagonal + 4);
         return 1;
     }
 
@@ -352,19 +354,28 @@ function game_over(){
     end_game = 1;
     let all_boxes = document.querySelectorAll(".box");
         for (let i = 0; i < all_boxes.length; i++){
-            all_boxes[i].style.outline = "";
+            console.log(all_boxes[i].style.outline);
+            if(all_boxes[i].style.outline == "rgb(255, 116, 108) solid thick"){
+                
+                all_boxes[i].style.outline = "";
+            }
+            
         }
     console.log(end_game);
 }
 
-function highlight_winning_game(){
+function highlight_winning_game(game1, game2, game3){
     let all_boxes = document.querySelectorAll(".box");
         for (let i = 0; i < all_boxes.length; i++){
             if(biggame[i] == 0 && turn_count % 2 == 0){
-                all_boxes[i].style.outline = "thick solid #00AF00";
+                if (i == game1 || i == game2 || i == game3){
+                    all_boxes[i].style.outline = "thick solid #00AF00";
+                }
             }
             else if(biggame[i] == 1 && turn_count % 2 == 1){
-                all_boxes[i].style.outline = "thick solid #00AF00";
+                if (i == game1 || i == game2 || i == game3){
+                    all_boxes[i].style.outline = "thick solid #00AF00";
+                }
             }
             else{
                 continue;
@@ -531,7 +542,7 @@ reset();
 8. Check big game after a minigame is won (done)
 9. Game Over Function (done)
 10. What if big game is a draw? At which point it is not possible to win? (done)
-11. Amend grid size according to the screen
+11. Amend grid size according to the screen (done)
 */
 
 }
