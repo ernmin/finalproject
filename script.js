@@ -20,6 +20,73 @@ let end_game = null;
 const turn = document.querySelector('#whose-turn');
 indicate_turn();
 
+let undo_info = {
+    max_undo: 0,
+    two_move_game: null,
+    two_move_box: null,
+    one_move_game: null,
+    one_move_box: null,
+    update(game_num, box_num){
+        this.two_move_game = this.one_move_game;
+        this.two_move_box = this.one_move_box;
+        this.one_move_game = game_num;
+        this.one_move_box = box_num;
+        this.max_undo = 1;
+    },
+    reset(){
+        this.two_move_game = null;
+        this.two_move_box = null;
+        this.one_move_game = null;
+        this.one_move_box = null;
+    }
+}
+
+function undo_move_shell(){
+    let game_num = undo_info.one_move_game;
+    let box_num = undo_info.one_move_box;
+    console.log('undo move shell', game_num, box_num);
+    undo_move(game_num,box_num);
+}
+
+function undo_move(game_num, box_num){
+    if(end_game == 1 || undo_info.max_undo == 0){
+        return;
+    }
+    arr[game_num][box_num] = null;
+    let selector = '#box' + '-' + game_num + '-' + box_num;
+    let box1 = document.querySelector(selector);
+    if (box1.hasChildNodes()){
+        box1.removeChild(box1.firstElementChild);
+    }
+    turn_count--;
+    console.log(turn_count);
+    unhighlight_game(game_num);
+    /*still need to unoutline the minigame*/
+    
+    unhighlight_borders();
+    console.log(undo_info.two_move_game, undo_info.two_move_box)
+
+    if(undo_info.two_move_game != null && undo_info.two_move_box != null){
+        next_game_border(undo_info.two_move_game, undo_info.two_move_box); /*need to outline the previous game instead of the current game*/
+    }
+    indicate_turn();
+    undo_info.max_undo = 0;
+}
+
+function unhighlight_game(game_num){
+    for (let box_num = 0; box_num < 9; box_num++){
+        let selector = '#box' + '-' + game_num + '-' + box_num;
+        let box = document.querySelector(selector);
+        box.style.backgroundColor = "";
+    }
+}
+
+function unhighlight_borders(){
+    let all_boxes = document.querySelectorAll(".box");
+        for (let i = 0; i < all_boxes.length; i++){
+            all_boxes[i].style.outline = "";
+        }
+}
 /*
 null is empty
 0 is circle
@@ -27,14 +94,18 @@ null is empty
 5 is draw
 */ 
 
+function undo_initialize(){
+    let undo = document.querySelector("#undo");
+    undo.addEventListener('click', undo_move_shell);
+}
+
 function box(game_num, box_num){
     /*let box_num = 1;*/
     let selector = '#box' + '-' + game_num + '-' + box_num;
     let box1 = document.querySelector(selector);
     /*let box_id = 1;*/
     box1.addEventListener('click', mark_cross_circle.bind(null, game_num, box_num, box1));
-    /*let undo = document.querySelector("#undo");
-    undo.addEventListener('click', undo_move.bind(game_num, box_num));*/
+    
 
 }
 
@@ -46,9 +117,9 @@ function mark_cross_circle(game_num, box_num, box1){
         return;
     }
 
-    else if (previous_game_num != 9 && previous_game_num != game_num && biggame[previous_game_num] == null){
+    /*else if (previous_game_num != 9 && previous_game_num != game_num && biggame[previous_game_num] == null){
         return;
-    }
+    }*/
    
     else {
         let image = document.createElement("img");
@@ -87,6 +158,9 @@ function mark_cross_circle(game_num, box_num, box1){
             previous_game_num = box_num;
             next_game_border(game_num, box_num);
             indicate_turn();
+            undo_info.update(game_num, box_num);
+            console.log('undo', undo_info);
+            console.log('undo two move box', undo_info.two_move_box);
         }
         else {
             image.src = "x-mark.png"
@@ -119,6 +193,9 @@ function mark_cross_circle(game_num, box_num, box1){
             previous_game_num = box_num;
             next_game_border(game_num, box_num);
             indicate_turn();
+            undo_info.update(game_num, box_num);
+            console.log('undo', undo_info);
+            console.log('undo two move box', undo_info.two_move_box);
         }
     }
 }
@@ -179,27 +256,6 @@ function reset(){
     });
 }
 
-function undo_move(game_num, box_num){
-    arr[game_num][box_num] = null;
-    let selector = '#box' + '-' + game_num + '-' + box_num;
-    let box1 = document.querySelector(selector);
-    if (box1.hasChildNodes()){
-        box1.removeChild(box1.firstElementChild);
-    }
-    turn_count--;
-    unhighlight_game(game_num);
-    unhighlight_borders();
-    next_game_border(game_num, box_num);
-    indicate_turn();
-}
-
-function unhighlight_borders(){
-    let all_boxes = document.querySelectorAll(".box");
-        for (let i = 0; i < all_boxes.length; i++){
-            all_boxes[i].style.outline = "";
-        }
-}
-
 function draw_or_win(description){
     console.log(description)
     turn.textContent = description;
@@ -240,13 +296,7 @@ function highlight_game_draw(game_num){
     }
 }
 
-function unhighlight_game(game_num){
-    for (let box_num = 0; box_num < 9; box_num++){
-        let selector = '#box' + '-' + game_num + '-' + box_num;
-        let box = document.querySelector(selector);
-        box.style.backgroundColor = "";
-    }
-}
+
 
 function check_small_game(game_num){
     /*if (biggame[game_num] != null){
@@ -559,6 +609,7 @@ for (let game_num = 0; game_num < 9; game_num++){
     for (let box_num = 0; box_num < 9; box_num++)
     box(game_num, box_num);
 }
+undo_initialize();
 reset();
 
 
