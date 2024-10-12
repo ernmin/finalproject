@@ -46,7 +46,7 @@ let undo_info = {
         this.one_move_box = this.two_move_box;
         this.two_move_game = this.three_move_game;
         this.two_move_box = this.three_move_box;
-    },
+    }, /* will not feed wrong info because only an undo can be done after a move*/
     reset(){
         this.three_move_game = null,
         this.three_move_box = null,
